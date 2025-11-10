@@ -30,6 +30,13 @@ const registerFormSchema = z.object({
 
 type RegisterFormValues = z.infer<typeof registerFormSchema>;
 
+/**
+ * Render a registration form that validates input and signs up users via email.
+ *
+ * The component validates email, password, and password confirmation on the client, disables controls while submitting, and initiates an email sign-up flow. On successful sign-up it navigates to "/", and on error it displays an error toast.
+ *
+ * @returns A React element that renders the sign-up form UI
+ */
 export function RegisterForm () {
     const router = useRouter();
 
