@@ -8,7 +8,7 @@ export const requireAuth = async () => {
         headers: await headers(),
     });
 
-    if(!session){
+    if (!session){
         redirect("/login");
     }
 
@@ -20,7 +20,7 @@ export const requireUnauth = async () => {
         headers: await headers(),
     });
 
-    if(session){
+    if (session){
         redirect("/");
     }
 

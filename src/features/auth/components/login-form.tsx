@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { authClient } from "@/lib/auth-client";
@@ -12,6 +13,7 @@ import z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
+import { Eye, EyeOff } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, } from "@/components/ui/card";
@@ -19,7 +21,9 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 
 
 const loginFormSchema = z.object({
-    email: z.email("Please enter a valid email address"),
+    email: z.email({
+        error: () => "Please enter a valid email address"
+    }),
     password: z.string().min(1, "Password is required"),
 })
 
@@ -27,6 +31,8 @@ type LoginFormValues = z.infer<typeof loginFormSchema>;
 
 export function LoginForm () {
     const router = useRouter();
+
+    const [showPassword, setShowPassword] = useState(false);
 
     const form = useForm<LoginFormValues>({
         resolver: zodResolver(loginFormSchema),
@@ -72,6 +78,12 @@ export function LoginForm () {
                                         type="button"
                                         disabled={isPending}
                                     >
+                                        <Image
+                                            alt="GitHub Logo"
+                                            src="/logos/github.svg"
+                                            width={20}
+                                            height={20}
+                                        />
                                         Continue with GitHub
                                     </Button>
                                     <Button
@@ -80,6 +92,12 @@ export function LoginForm () {
                                         type="button"
                                         disabled={isPending}
                                     >
+                                        <Image
+                                            alt="Google Logo"
+                                            src="/logos/google.svg"
+                                            width={20}
+                                            height={20}
+                                        />
                                         Continue with Google
                                     </Button>
                                 </div>
@@ -108,11 +126,23 @@ export function LoginForm () {
                                             <FormItem>
                                                 <FormLabel>Password</FormLabel>
                                                 <FormControl>
-                                                    <Input 
-                                                        type="password"
-                                                        placeholder="********"
-                                                        {...field}
-                                                    />
+                                                    <div className="relative">
+                                                        <Input
+                                                            type={showPassword ? "text" : "password"}
+                                                            placeholder="********"
+                                                            {...field}
+                                                            className="pr-10"
+                                                        />
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => setShowPassword(prev => !prev)}
+                                                            className="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8 flex items-center justify-center rounded-md focus:outline-none"
+                                                            aria-label={showPassword ? "Hide password" : "Show password"}
+                                                            title={showPassword ? "Hide password" : "Show password"}
+                                                        >
+                                                            {showPassword ? <Eye size={18} /> : <EyeOff size={18} />}
+                                                        </button>
+                                                    </div>
                                                 </FormControl>
                                                 <FormMessage/>
                                             </FormItem> 
@@ -134,7 +164,6 @@ export function LoginForm () {
                                     >
                                         Sign up
                                     </Link>
-
                                 </div>
                             </div>
                         </form>
