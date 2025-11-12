@@ -3,6 +3,9 @@ import prisma from '@/lib/db';
 
 import { inngest } from '@/inngest/client';
 
+import { generateText } from 'ai';
+import { google } from '@ai-sdk/google';
+
 export const appRouter = createTRPCRouter({
     getWorkflows: protectedProcedure
         .query(({ ctx }) => {
@@ -20,6 +23,14 @@ export const appRouter = createTRPCRouter({
 
         return {success: true, message: "Job queued"};
     }),  
+    testAi: protectedProcedure.mutation(async ({ ctx }) => {
+        
+        await inngest.send({
+            name: "execute/ai",
+        });
+
+        return {success: true, message: "Job queued"};
+    }),
 });
 // export type definition of API
 export type AppRouter = typeof appRouter;

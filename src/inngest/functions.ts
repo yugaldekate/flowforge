@@ -1,20 +1,51 @@
-import prisma from "@/lib/db";
 import { inngest } from "./client";
 
-export const helloWorld = inngest.createFunction(
-    { id: "hello-world" },
-    { event: "test/hello.world" },
-    async ({ event, step }) => {
-        await step.sleep("Video fetching", "5s");
-        await step.sleep("Video transcribing", "5s");
-        await step.sleep("Sending transcription to AI", "5s");
+import { generateText } from "ai";
+import { createOpenAI } from "@ai-sdk/openai";
+import { createAnthropic } from "@ai-sdk/anthropic";
+import { createGoogleGenerativeAI } from "@ai-sdk/google";
 
-        await step.run("create-workflow", () => {
-            return prisma.workflow.create({
-                data: {
-                    name: "workflow-from-inngest",
-                },
-            });
-        });
+const openai = createOpenAI();
+const anthropic = createAnthropic();
+const google = createGoogleGenerativeAI();
+
+export const execute = inngest.createFunction(
+    { id: "execute-ai" },
+    { event: "execute/ai" },
+    async ({ event, step }) => {
+
+        await step.sleep("pretend to work", "5s");
+
+        const { steps: googleSteps } = await step.ai.wrap(
+            "gemini-generate-text", // step-name
+            generateText,
+            {
+                model: google("gemini-2.5-flash"),
+                system: "You are a helpful assistant.",
+                prompt: "What is 2 + 2 ?",
+            }
+        );
+
+        const { steps: openaiSteps } = await step.ai.wrap(
+            "openai-generate-text", // step-name
+            generateText,
+            {
+                model: openai("gpt-4"),
+                system: "You are a helpful assistant.",
+                prompt: "What is 2 + 3 ?",
+            }
+        );
+
+        const { steps: anthropicSteps } = await step.ai.wrap(
+            "anthropic-generate-text", // step-name
+            generateText,
+            {
+                model: anthropic("claude-3-haiku-20240307"),
+                system: "You are a helpful assistant.",
+                prompt: "What is 2 + 4 ?",
+            }
+        );
+
+        return { googleSteps, openaiSteps, anthropicSteps };
     },
 );
