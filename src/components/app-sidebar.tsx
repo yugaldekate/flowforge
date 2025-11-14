@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useRouter, usePathname } from "next/navigation";
 
 import { authClient } from "@/lib/auth-client";
+import { useHasActiveSubscription } from "@/features/subscriptions/hooks/use-subscription";
 
 import { CreditCardIcon, FolderOpenIcon, HistoryIcon, KeyIcon, LogOutIcon, StarIcon } from "lucide-react";
 import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "./ui/sidebar";
@@ -37,6 +38,7 @@ export const AppSidebar = () => {
 
     const router = useRouter();
     const pathname = usePathname();
+    const { hasActiveSubscription, isLoading } = useHasActiveSubscription();
 
     return (
         <Sidebar variant="sidebar" collapsible="icon">
@@ -79,21 +81,23 @@ export const AppSidebar = () => {
 
             <SidebarFooter>
                 <SidebarMenu>
-                    <SidebarMenuItem>
-                        <SidebarMenuButton 
-                            className="gap-x-4 px-4 h-10"
-                            tooltip="Upgrade to Pro"
-                            onClick={() => {}}
-                        >
-                            <StarIcon className="size-4" />
-                            <span>Upgrade to Pro</span>
-                        </SidebarMenuButton>
-                    </SidebarMenuItem>
+                    { !hasActiveSubscription && !isLoading && (
+                        <SidebarMenuItem>
+                            <SidebarMenuButton 
+                                className="gap-x-4 px-4 h-10"
+                                tooltip="Upgrade to Pro"
+                                onClick={ () => authClient.checkout({slug: "pro"}) }
+                            >
+                                <StarIcon className="size-4" />
+                                <span>Upgrade to Pro</span>
+                            </SidebarMenuButton>
+                        </SidebarMenuItem>
+                    )}
                     <SidebarMenuItem>
                         <SidebarMenuButton 
                             className="gap-x-4 px-4 h-10"
                             tooltip="Billing Portal"
-                            onClick={() => {}}
+                            onClick={ () => authClient.customer.portal() }
                         >
                             <CreditCardIcon className="size-4" />
                             <span>Billing Portal</span>
@@ -101,7 +105,7 @@ export const AppSidebar = () => {
                     </SidebarMenuItem>
                     <SidebarMenuItem>
                         <SidebarMenuButton 
-                            className="gap-x-4 px-4 h-10"
+                            className="gap-x-4 px-4 h-10 text-destructive"
                             tooltip="Sign out"
                             onClick={() => authClient.signOut({
                                 fetchOptions: {
