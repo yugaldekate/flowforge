@@ -34,6 +34,12 @@ function getUrl() {
 
     return `${base}/api/trpc`;
 }
+/**
+ * Provides tRPC and React Query contexts to the wrapped React tree.
+ *
+ * @param props.children - The React node(s) to render inside the providers.
+ * @returns A React element that wraps `children` with QueryClientProvider and TRPCProvider.
+ */
 export function TRPCReactProvider( props: Readonly<{   children: React.ReactNode }>) {
   // NOTE: Avoid useState when initializing the query client if you don't
   //       have a suspense boundary between this and the code that may
