@@ -105,7 +105,7 @@ export const AppSidebar = () => {
                     </SidebarMenuItem>
                     <SidebarMenuItem>
                         <SidebarMenuButton 
-                            className="gap-x-4 px-4 h-10 text-destructive"
+                            className="gap-x-4 px-4 h-10 text-destructive hover:text-destructive hover:bg-red-100"
                             tooltip="Sign out"
                             onClick={() => authClient.signOut({
                                 fetchOptions: {
