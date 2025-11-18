@@ -271,7 +271,7 @@ export const EntityItem = ({ href, title, subtitle, image, actions, onRemove, is
                                         </Button>
                                     </DropdownMenuTrigger>
                                     <DropdownMenuContent align="end" onClick={(e) => e.stopPropagation()}>
-                                        <DropdownMenuItem onClick={handleRemove}>
+                                        <DropdownMenuItem onClick={handleRemove} variant="destructive">
                                             <TrashIcon className="size-4 text-destructive"/>
                                             Delete
                                         </DropdownMenuItem>
