@@ -22,8 +22,6 @@ export const EditorSaveButton = ({workflowId} : {workflowId: string}) => {
     );
 }
 
-
-
 export const EditorNameInput = ({workflowId} : {workflowId: string}) => {
     const workflow = useSuspenseWorkflow(workflowId);
     const updateWorkflow = useUpdateWorkflowName();

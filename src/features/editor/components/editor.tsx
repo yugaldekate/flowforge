@@ -1,15 +1,56 @@
 "use client";
 
+import { useState, useCallback } from 'react';
+
 import { ErrorView, LoadingView } from "@/components/entity-components";
 import { useSuspenseWorkflow } from "@/features/workflows/hooks/use-workflows";
+
+import '@xyflow/react/dist/style.css';
+import { nodeComponents } from '@/config/node-components';
+import { ReactFlow, applyNodeChanges, applyEdgeChanges, addEdge, type Node, type Edge, type NodeChange, type EdgeChange, type Connection, Background, Controls, MiniMap, Panel } from '@xyflow/react';
+import { AddNodeButton } from './add-note-button';
 
 export const Editor = ({ workflowId }: { workflowId: string }) => {
     const workflow = useSuspenseWorkflow(workflowId);
 
+    const [nodes, setNodes] = useState<Node[]>(workflow.data.nodes);
+    const [edges, setEdges] = useState<Edge[]>(workflow.data.edges);
+
+    const onNodesChange = useCallback(
+        (changes: NodeChange[]) => setNodes((nodesSnapshot) => applyNodeChanges(changes, nodesSnapshot)),
+        [],
+    );
+
+    const onEdgesChange = useCallback(
+        (changes: EdgeChange[]) => setEdges((edgesSnapshot) => applyEdgeChanges(changes, edgesSnapshot)),
+        [],
+    );
+
+    const onConnect = useCallback(
+        (params: Connection) => setEdges((edgesSnapshot) => addEdge(params, edgesSnapshot)),
+        [],
+    );
+
     return (
-        <p>
-            {JSON.stringify(workflow.data, null, 2)}
-        </p>
+        <div className="h-full w-full">
+            <ReactFlow
+                nodes={nodes}
+                edges={edges}
+                onNodesChange={onNodesChange}
+                onEdgesChange={onEdgesChange}
+                onConnect={onConnect}
+                nodeTypes={nodeComponents}
+                fitView
+                proOptions={{ hideAttribution: true }}
+            >
+                <Background/>
+                <Controls/>
+                <MiniMap/>
+                <Panel position="top-right">
+                    <AddNodeButton/>
+                </Panel>
+            </ReactFlow>    
+        </div>
     );
 }
 
