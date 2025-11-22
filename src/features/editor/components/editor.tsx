@@ -10,8 +10,14 @@ import { nodeComponents } from '@/config/node-components';
 import { ReactFlow, applyNodeChanges, applyEdgeChanges, addEdge, type Node, type Edge, type NodeChange, type EdgeChange, type Connection, Background, Controls, MiniMap, Panel } from '@xyflow/react';
 import { AddNodeButton } from './add-node-button';
 
+import { useSetAtom } from 'jotai';
+import { editorAtom } from '@/features/editor/store/atoms';
+
 export const Editor = ({ workflowId }: { workflowId: string }) => {
     const workflow = useSuspenseWorkflow(workflowId);
+
+    //sending data using Jotai because we can't access Nodes & Edges data using useReactFlow() outside of reactflow canvas
+    const setEditor = useSetAtom(editorAtom);
 
     const [nodes, setNodes] = useState<Node[]>(workflow.data.nodes);
     const [edges, setEdges] = useState<Edge[]>(workflow.data.edges);
@@ -40,7 +46,13 @@ export const Editor = ({ workflowId }: { workflowId: string }) => {
                 onEdgesChange={onEdgesChange}
                 onConnect={onConnect}
                 nodeTypes={nodeComponents}
+                onInit={(data) => setEditor(data)}
                 fitView
+                snapGrid={[10, 10]}
+                snapToGrid
+                panOnScroll
+                panOnDrag={false}
+                selectionOnDrag
                 proOptions={{ hideAttribution: true }}
             >
                 <Background/>
