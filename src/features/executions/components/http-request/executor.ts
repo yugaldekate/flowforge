@@ -73,17 +73,9 @@ export const httpRequestExecutor: NodeExecutor<HttpRequestData> = async ({ data,
             }
         }
 
-        if(data.variableName){ 
-            return {
-                ...context,
-                [data.variableName] : responsePayload,
-            }
-        }
-
-        //Fallback to direct httpResponse for backward compatiblity
         return {
             ...context,
-            ...responsePayload,
+            [data.variableName] : responsePayload,
         }
     });
 
