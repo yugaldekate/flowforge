@@ -15,8 +15,8 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 
 const formSchema = z.object({
     variableName: z.string()
-        .min(1, { message: "Varaible name is required"})
-        .regex(/^[A-Za-z_$][A-Za-z0-9_$]*$/, { message: "Varible name must start with a letter or underscore and contain only letters, numbers and underscores"}),
+        .min(1, { message: "Variable name is required"})
+        .regex(/^[A-Za-z_$][A-Za-z0-9_$]*$/, { message: "Variable name must start with a letter or underscore and contain only letters, numbers and underscores"}),
     endpoint: z.url({ message: "Please enter a valid URL" }),
     method: z.enum(["GET", "POST", "PUT", "PATCH", "DELETE"]),
     body: z.string().optional(),
@@ -66,7 +66,7 @@ export const HttpRequestDialog = ({ open, onOpenChange, onSubmit, defaultValues=
     
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent>
+            <DialogContent className="max-h-[90vh] sm:max-h-[95vh] overflow-y-auto scrollbar-hide">
                 <DialogHeader>
                     <DialogTitle>
                         HTTP Request
@@ -91,7 +91,7 @@ export const HttpRequestDialog = ({ open, onOpenChange, onSubmit, defaultValues=
                                         />
                                     </FormControl>
                                     <FormDescription>
-                                        Use this name to refrence the result in other nodes:{" "} {`{{${watchVariableName}.httpResponce.data}}`}
+                                        Use this name to reference the result in other nodes:{" "} {`{{${watchVariableName}.httpResponse.data}}`}
                                     </FormDescription>
                                     <FormMessage/>
                                 </FormItem> 
