@@ -26,7 +26,13 @@ const triggerNodes: NodeTypeOption[] = [
         label: "Trigger Manually",
         description: "Runs the flow on clicking a button. Good for getting started quickly",
         icon: MousePointerIcon, 
-    }
+    },
+    {
+        type: NodeType.GOOGLE_FORM_TRIGGER,
+        label: "Google Form",
+        description: "Runs the flow when Google Form is submitted",
+        icon: "/logos/googleform.svg", 
+    },
 ];
 
 const executionNodes: NodeTypeOption[] = [
@@ -115,7 +121,7 @@ export const NodeSelector = ({ open, onOpenChange, children }: NodeSelectorProps
                             >
                                 <div className="flex items-center gap-6 w-full overflow-hidden">
                                     {typeof Icon === "string" ? (
-                                        <Image
+                                        <img
                                             src={Icon}
                                             className="size-5 object-contain rounded-sm"
                                             alt={nodeType.label}

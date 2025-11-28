@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "biome check",
     "format": "biome format --write",
-    "inngest:dev": "inngest-cli dev"
+    "inngest:dev": "inngest-cli dev",
+    "ngrok:dev": "ngrok http --url=heroic-cute-fish.ngrok-free.app 3000"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^2.0.23",

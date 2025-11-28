@@ -10,7 +10,7 @@ interface ManualTriggerDialogProps {
 export const ManualTriggerDialog = ({ open, onOpenChange}: ManualTriggerDialogProps) => {
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent>
+            <DialogContent className="max-h-[90vh] sm:max-h-[95vh] overflow-y-auto scrollbar-hide">
                 <DialogHeader>
                     <DialogTitle>
                         Manual Trigger
