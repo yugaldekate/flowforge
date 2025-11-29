@@ -83,7 +83,7 @@ export const StripeTriggerDialog = ({ open, onOpenChange}: StripeTriggerDialogPr
 
                     <div className="rounded-lg bg-muted p-4 space-y-2">
                         <h4 className="font-medium text-sm">
-                            Avaiable variables
+                            Available variables
                         </h4>
                         <ol className="text-sm text-muted-foreground space-y-1">
                             <li>
@@ -100,12 +100,6 @@ export const StripeTriggerDialog = ({ open, onOpenChange}: StripeTriggerDialogPr
                             </li>
                             <li>
                                 <code className="bg-background px-1 py-0.5 rounded">
-                                    {"{{stripe.eventType}}"}
-                                </code>
-                                - Customer ID
-                            </li>
-                            <li>
-                                <code className="bg-background px-1 py-0.5 rounded">
                                     {"{{json stripe}}"}
                                 </code>
                                 - Full event data as JSON
@@ -114,8 +108,15 @@ export const StripeTriggerDialog = ({ open, onOpenChange}: StripeTriggerDialogPr
                                 <code className="bg-background px-1 py-0.5 rounded">
                                     {"{{stripe.customerId}}"}
                                 </code>
+                                - Customer ID
+                            </li>
+                            <li>
+                                <code className="bg-background px-1 py-0.5 rounded">
+                                    {"{{stripe.eventType}}"}
+                                </code>
                                 - Event type (e.g., payment_intent.succeeded)
                             </li>
+                            
                         </ol>
                     </div>
                 </div>
