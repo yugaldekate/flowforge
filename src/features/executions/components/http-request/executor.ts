@@ -5,10 +5,10 @@ import type { NodeExecutor } from "@/features/executions/types";
 import { httpRequestChannel } from "@/inngest/channels/http-request";
 
 type HttpRequestData = {
-    variableName: string;
+    variableName?: string;
     body?: string;
-    endpoint: string;
-    method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
+    endpoint?: string;
+    method?: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
 };
 
 Handlebars.registerHelper("json" , (context) => {
@@ -28,41 +28,42 @@ export const httpRequestExecutor: NodeExecutor<HttpRequestData> = async ({ data,
         })
     );
 
-    if(!data.endpoint){
-        await publish(httpRequestChannel()
-            .status({
-                nodeId: nodeId,
-                status: "error",
-            })
-        );
-
-        throw new NonRetriableError("HTTP request node: No endpoint configured")
-    }
-
-    if(!data.variableName){
-        await publish(httpRequestChannel()
-            .status({
-                nodeId: nodeId,
-                status: "error",
-            })
-        );
-
-        throw new NonRetriableError("HTTP request node: Variable name not configured")
-    }
-
-    if(!data.method){
-        await publish(httpRequestChannel()
-            .status({
-                nodeId: nodeId,
-                status: "error",
-            })
-        );
-
-        throw new NonRetriableError("HTTP request node: Method not configured")
-    }
-
     try{
         const result  = await step.run("http-request", async () => {
+
+            if(!data.endpoint){
+                await publish(httpRequestChannel()
+                    .status({
+                        nodeId: nodeId,
+                        status: "error",
+                    })
+                );
+
+                throw new NonRetriableError("HTTP request node: No endpoint configured")
+            }
+
+            if(!data.variableName){
+                await publish(httpRequestChannel()
+                    .status({
+                        nodeId: nodeId,
+                        status: "error",
+                    })
+                );
+
+                throw new NonRetriableError("HTTP request node: Variable name not configured")
+            }
+
+            if(!data.method){
+                await publish(httpRequestChannel()
+                    .status({
+                        nodeId: nodeId,
+                        status: "error",
+                    })
+                );
+
+                throw new NonRetriableError("HTTP request node: Method not configured")
+            }
+
             /*
                 Example endpoint template — supports Handlebars templating using values from `context`.
                 E.g. "https://jsonplaceholder.typicode.com/users/{{todo.httpResponse.data.userId}}"
