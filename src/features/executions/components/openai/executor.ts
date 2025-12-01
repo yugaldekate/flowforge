@@ -61,7 +61,7 @@ export const openAiExecutor: NodeExecutor<OpenAiData> = async ({ data, nodeId, c
             })
         );
         
-        throw new NonRetriableError("Anthropic node: Credential is required");
+        throw new NonRetriableError("OpenAi node: Credential is required");
     }
 
     const systemPrompt = data.systemPrompt ? Handlebars.compile(data.systemPrompt)({ context }) : "You are a helpful assistant.";
