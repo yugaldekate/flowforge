@@ -15,6 +15,7 @@ type GeminiNodeData = {
     variableName?: string;
     systemPrompt?: string;
     userPrompt?: string;
+    credentialId?: string;
 }
 
 // Node<GeminiNodeData> = configuring the type of data in the Node
@@ -44,6 +45,7 @@ export const GeminiNode = memo(( props: NodeProps<GeminiNodeType> ) => {
                         variableName: values.variableName,
                         systemPrompt: values.systemPrompt,
                         userPrompt: values.userPrompt,
+                        credentialId: values.credentialId,
                     }
                 }
             }

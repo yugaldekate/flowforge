@@ -5,11 +5,13 @@ import { anthropicChannel } from "@/inngest/channels/anthropic";
 
 import { generateText } from "ai";
 import { createAnthropic } from "@ai-sdk/anthropic";
+import prisma from "@/lib/db";
 
 type AnthropicData = {
     variableName?: string;
     systemPrompt?: string;
     userPrompt?: string;
+    credentialId?: string;
 }
 
 Handlebars.registerHelper("json" , (context) => {
@@ -37,7 +39,7 @@ export const anthropicExecutor: NodeExecutor<AnthropicData> = async ({ data, nod
             })
         );
 
-        throw new NonRetriableError("Anthropic node: Variable name not configured")
+        throw new NonRetriableError("Anthropic node: Variable name not configured");
     }
 
     if(!data.userPrompt){
@@ -48,20 +50,38 @@ export const anthropicExecutor: NodeExecutor<AnthropicData> = async ({ data, nod
             })
         );
 
-        throw new NonRetriableError("Anthropic node: User prompt is missing")
+        throw new NonRetriableError("Anthropic node: User prompt is missing");
     }
 
-    // TODO: Throw if credential is missing
+    if(!data.credentialId){
+            await publish(anthropicChannel()
+                .status({
+                    nodeId: nodeId,
+                    status: "error",
+                })
+            );
+    
+        throw new NonRetriableError("Anthropic node: Credential is required");
+    }
 
     const systemPrompt = data.systemPrompt ? Handlebars.compile(data.systemPrompt)({ context }) : "You are a helpful assistant.";
 
     const userPrompt = Handlebars.compile(data.userPrompt)({ context });
 
-    // TODO: Fetch credential that user selected for Anthropic
-    const credentialValue = process.env.ANTHROPIC_API_KEY!;
+    const credential = await step.run("get-anthropic-credential", async () => {
+        return prisma.credential.findUnique({
+            where: {
+                id: data.credentialId,
+            },
+        });
+    });
+
+    if(!credential){
+        throw new NonRetriableError("Anthropic node: Credential not found");
+    }
 
     const anthropic = createAnthropic({
-        apiKey: credentialValue,
+        apiKey: credential.value,
     });
 
     try {

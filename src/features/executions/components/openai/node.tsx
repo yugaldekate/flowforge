@@ -15,6 +15,7 @@ type OpenAiNodeData = {
     variableName?: string;
     systemPrompt?: string;
     userPrompt?: string;
+    credentialId?: string;
 }
 
 // Node<OpenAiNodeData> = configuring the type of data in the Node
@@ -44,6 +45,7 @@ export const OpenAiNode = memo(( props: NodeProps<OpenAiNodeType> ) => {
                         variableName: values.variableName,
                         systemPrompt: values.systemPrompt,
                         userPrompt: values.userPrompt,
+                        credentialId: values.credentialId,
                     }
                 }
             }

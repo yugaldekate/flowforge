@@ -5,11 +5,13 @@ import { geminiChannel } from "@/inngest/channels/gemini";
 
 import { generateText } from "ai";
 import { createGoogleGenerativeAI } from "@ai-sdk/google";
+import prisma from "@/lib/db";
 
 type GeminiData = {
     variableName?: string;
     systemPrompt?: string;
     userPrompt?: string;
+    credentialId?: string;
 }
 
 Handlebars.registerHelper("json" , (context) => {
@@ -37,7 +39,18 @@ export const geminiExecutor: NodeExecutor<GeminiData> = async ({ data, nodeId, c
             })
         );
 
-        throw new NonRetriableError("Gemini node: Variable name not configured")
+        throw new NonRetriableError("Gemini node: Variable name not configured");
+    }
+
+    if(!data.credentialId){
+        await publish(geminiChannel()
+            .status({
+                nodeId: nodeId,
+                status: "error",
+            })
+        );
+
+        throw new NonRetriableError("Gemini node: Credential is required");
     }
 
     if(!data.userPrompt){
@@ -48,7 +61,7 @@ export const geminiExecutor: NodeExecutor<GeminiData> = async ({ data, nodeId, c
             })
         );
 
-        throw new NonRetriableError("Gemini node: User prompt is missing")
+        throw new NonRetriableError("Gemini node: User prompt is missing");
     }
 
     // TODO: Throw if credential is missing
@@ -57,11 +70,20 @@ export const geminiExecutor: NodeExecutor<GeminiData> = async ({ data, nodeId, c
 
     const userPrompt = Handlebars.compile(data.userPrompt)({ context });
 
-    // TODO: Fetch credential that user selected for Gemini
-    const credentialValue = process.env.GOOGLE_GENERATIVE_AI_API_KEY!;
+    const credential = await step.run("get-gemini-credential", async () => {
+        return prisma.credential.findUnique({
+            where: {
+                id: data.credentialId,
+            },
+        });
+    });
+
+    if(!credential){
+        throw new NonRetriableError("Gemini node: Credential not found");
+    }
 
     const google = createGoogleGenerativeAI({
-        apiKey: credentialValue,
+        apiKey: credential.value,
     });
 
     try {
