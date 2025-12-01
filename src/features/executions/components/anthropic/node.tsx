@@ -15,6 +15,7 @@ type AnthropicNodeData = {
     variableName?: string;
     systemPrompt?: string;
     userPrompt?: string;
+    credentialId?: string;
 }
 
 // Node<AnthropicNodeData> = configuring the type of data in the Node
@@ -44,6 +45,7 @@ export const AnthropicNode = memo(( props: NodeProps<AnthropicNodeType> ) => {
                         variableName: values.variableName,
                         systemPrompt: values.systemPrompt,
                         userPrompt: values.userPrompt,
+                        credentialId: values.credentialId,
                     }
                 }
             }
