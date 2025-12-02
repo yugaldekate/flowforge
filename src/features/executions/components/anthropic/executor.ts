@@ -22,7 +22,7 @@ Handlebars.registerHelper("json" , (context) => {
 });
 
 // context is the previous node data
-export const anthropicExecutor: NodeExecutor<AnthropicData> = async ({ data, nodeId, context, step, publish}) => {
+export const anthropicExecutor: NodeExecutor<AnthropicData> = async ({ data, nodeId, userId, context, step, publish}) => {
     
     await publish(anthropicChannel()
         .status({
@@ -54,12 +54,12 @@ export const anthropicExecutor: NodeExecutor<AnthropicData> = async ({ data, nod
     }
 
     if(!data.credentialId){
-            await publish(anthropicChannel()
-                .status({
-                    nodeId: nodeId,
-                    status: "error",
-                })
-            );
+        await publish(anthropicChannel()
+            .status({
+                nodeId: nodeId,
+                status: "error",
+            })
+        );
     
         throw new NonRetriableError("Anthropic node: Credential is required");
     }
@@ -72,11 +72,19 @@ export const anthropicExecutor: NodeExecutor<AnthropicData> = async ({ data, nod
         return prisma.credential.findUnique({
             where: {
                 id: data.credentialId,
+                userId: userId,
             },
         });
     });
 
     if(!credential){
+        await publish(anthropicChannel()
+            .status({
+                nodeId: nodeId,
+                status: "error",
+            })
+        );
+
         throw new NonRetriableError("Anthropic node: Credential not found");
     }
 

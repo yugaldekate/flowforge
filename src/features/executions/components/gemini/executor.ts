@@ -22,7 +22,7 @@ Handlebars.registerHelper("json" , (context) => {
 });
 
 // context is the previous node data
-export const geminiExecutor: NodeExecutor<GeminiData> = async ({ data, nodeId, context, step, publish}) => {
+export const geminiExecutor: NodeExecutor<GeminiData> = async ({ data, nodeId, userId, context, step, publish}) => {
     
     await publish(geminiChannel()
         .status({
@@ -64,8 +64,6 @@ export const geminiExecutor: NodeExecutor<GeminiData> = async ({ data, nodeId, c
         throw new NonRetriableError("Gemini node: User prompt is missing");
     }
 
-    // TODO: Throw if credential is missing
-
     const systemPrompt = data.systemPrompt ? Handlebars.compile(data.systemPrompt)({ context }) : "You are a helpful assistant.";
 
     const userPrompt = Handlebars.compile(data.userPrompt)({ context });
@@ -74,11 +72,19 @@ export const geminiExecutor: NodeExecutor<GeminiData> = async ({ data, nodeId, c
         return prisma.credential.findUnique({
             where: {
                 id: data.credentialId,
+                userId: userId,
             },
         });
     });
 
     if(!credential){
+        await publish(geminiChannel()
+            .status({
+                nodeId: nodeId,
+                status: "error",
+            })
+        );
+        
         throw new NonRetriableError("Gemini node: Credential not found");
     }
 
