@@ -22,7 +22,7 @@ Handlebars.registerHelper("json" , (context) => {
 });
 
 // context is the previous node data
-export const openAiExecutor: NodeExecutor<OpenAiData> = async ({ data, nodeId, context, step, publish}) => {
+export const openAiExecutor: NodeExecutor<OpenAiData> = async ({ data, nodeId, userId, context, step, publish}) => {
     
     await publish(openAiChannel()
         .status({
@@ -72,11 +72,19 @@ export const openAiExecutor: NodeExecutor<OpenAiData> = async ({ data, nodeId, c
         return prisma.credential.findUnique({
             where: {
                 id: data.credentialId,
+                userId: userId,
             },
         });
     });
 
     if(!credential){
+        await publish(openAiChannel()
+            .status({
+                nodeId: nodeId,
+                status: "error",
+            })
+        );
+        
         throw new NonRetriableError("OpenAI node: Credential not found");
     }
 
