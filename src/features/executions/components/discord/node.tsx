@@ -12,6 +12,7 @@ import { useNodeStatus } from "@/features/executions/hooks/use-node-status";
 import { DISCORD_CHANNEL_NAME } from "@/inngest/channels/discord";
 
 type DiscordNodeData = {
+    variableName?: string;
     userName?: string;
     content?: string;
     webhookUrl?: string;

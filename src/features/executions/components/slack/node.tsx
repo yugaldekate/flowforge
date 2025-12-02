@@ -12,6 +12,7 @@ import { SLACK_CHANNEL_NAME } from "@/inngest/channels/slack";
 import { useNodeStatus } from "@/features/executions/hooks/use-node-status";
 
 type SlackNodeData = {
+    variableName?: string;
     content?: string;
     webhookUrl?: string;
 }
