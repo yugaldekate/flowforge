@@ -66,7 +66,7 @@ export const DiscordDialog = ({ open, onOpenChange, onSubmit, defaultValues={}}:
             <DialogContent className="max-h-[90vh] sm:max-h-[95vh] overflow-y-auto scrollbar-hide">
                 <DialogHeader>
                     <DialogTitle>
-                        Discord Configuraton
+                        Discord Configuration
                     </DialogTitle>
                     <DialogDescription>
                         Configure the Discord webhook settings for this node.

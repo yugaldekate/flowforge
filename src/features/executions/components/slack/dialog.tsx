@@ -63,7 +63,7 @@ export const SlackDialog = ({ open, onOpenChange, onSubmit, defaultValues={}}: S
             <DialogContent className="max-h-[90vh] sm:max-h-[95vh] overflow-y-auto scrollbar-hide">
                 <DialogHeader>
                     <DialogTitle>
-                        Slack Configuraton
+                        Slack Configuration
                     </DialogTitle>
                     <DialogDescription>
                         Configure the Slack webhook settings for this node.

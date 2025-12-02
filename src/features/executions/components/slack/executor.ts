@@ -43,7 +43,7 @@ export const slackExecutor: NodeExecutor<SlackData> = async ({ data, nodeId, con
     const content = decode(rawContent);
 
     try {
-        const result = step.run("slack-webhook" , async () => {
+        const result = await step.run("slack-webhook" , async () => {
             if(!data.webhookUrl){
                 await publish(slackChannel()
                     .status({
@@ -54,12 +54,6 @@ export const slackExecutor: NodeExecutor<SlackData> = async ({ data, nodeId, con
 
                 throw new NonRetriableError("Slack node: Webhook URL is required");
             }
-
-            await ky.post(data.webhookUrl! , {
-                json: {
-                    content: content, // The key depends on wokflow config
-                }
-            });
             
             if(!data.variableName){
                 await publish(slackChannel()
@@ -71,6 +65,12 @@ export const slackExecutor: NodeExecutor<SlackData> = async ({ data, nodeId, con
 
                 throw new NonRetriableError("Slack node: Variable name not configured");
             }
+
+            await ky.post(data.webhookUrl! , {
+                json: {
+                    content: content, // The key depends on wokflow config
+                }
+            });
 
             return {
                 ...context,

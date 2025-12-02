@@ -73,7 +73,7 @@ export const AnthropicDialog = ({ open, onOpenChange, onSubmit, defaultValues={}
             <DialogContent className="max-h-[90vh] sm:max-h-[95vh] overflow-y-auto scrollbar-hide">
                 <DialogHeader>
                     <DialogTitle>
-                        Anthropic Configuraton
+                        Anthropic Configuration
                     </DialogTitle>
                     <DialogDescription>
                         Configure the AI model and prompts for this node.

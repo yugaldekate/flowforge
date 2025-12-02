@@ -46,7 +46,7 @@ export const discordExecutor: NodeExecutor<DiscordData> = async ({ data, nodeId,
     const userName = data.userName ? decode(Handlebars.compile(data.userName)({ context })) : undefined;
 
     try {
-        const result = step.run("discord-webhook" , async () => {
+        const result = await step.run("discord-webhook" , async () => {
             if(!data.webhookUrl){
                 await publish(discordChannel()
                     .status({
@@ -58,13 +58,6 @@ export const discordExecutor: NodeExecutor<DiscordData> = async ({ data, nodeId,
                 throw new NonRetriableError("Discord node: Webhook URL is required");
             }
 
-            await ky.post(data.webhookUrl! , {
-                json: {
-                    userName: userName,
-                    content: content.slice(0, 2000) //Discord's maximum message length 
-                }
-            });
-            
             if(!data.variableName){
                 await publish(discordChannel()
                     .status({
@@ -75,6 +68,13 @@ export const discordExecutor: NodeExecutor<DiscordData> = async ({ data, nodeId,
 
                 throw new NonRetriableError("Discord node: Variable name not configured");
             }
+
+            await ky.post(data.webhookUrl! , {
+                json: {
+                    userName: userName,
+                    content: content.slice(0, 2000) //Discord's maximum message length 
+                }
+            });
 
             return {
                 ...context,

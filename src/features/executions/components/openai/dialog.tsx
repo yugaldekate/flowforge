@@ -73,7 +73,7 @@ export const OpenAiDialog = ({ open, onOpenChange, onSubmit, defaultValues={}}: 
             <DialogContent className="max-h-[90vh] sm:max-h-[95vh] overflow-y-auto scrollbar-hide">
                 <DialogHeader>
                     <DialogTitle>
-                        OpenAi Configuraton
+                        OpenAi Configuration
                     </DialogTitle>
                     <DialogDescription>
                         Configure the AI model and prompts for this node.
