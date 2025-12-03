@@ -57,7 +57,7 @@ export const ExecutionView = ({executionId} : {executionId: string}) => {
             </CardHeader>
 
             <CardContent className="space-y-4">
-                <div className="gird grid-cols-2 gap-4">
+                <div className="grid grid-cols-2 gap-4">
                     <div>
                         <p className="text-sm font-medium text-muted-foreground">
                             Workflow
