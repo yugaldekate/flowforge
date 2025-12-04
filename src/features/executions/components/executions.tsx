@@ -29,7 +29,7 @@ export const ExecutionsHeader = () => {
 
     return (
         <EntityHeader
-            title="Credentials"
+            title="Executions"
             description="View your workflow executions history"
         />
     );

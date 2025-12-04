@@ -6,6 +6,7 @@ import { openAiChannel } from "@/inngest/channels/openai";
 import { generateText } from "ai";
 import { createOpenAI } from "@ai-sdk/openai";
 import prisma from "@/lib/db";
+import { decrypt } from "@/lib/encryption";
 
 type OpenAiData = {
     variableName?: string;
@@ -89,7 +90,7 @@ export const openAiExecutor: NodeExecutor<OpenAiData> = async ({ data, nodeId, u
     }
 
     const openai = createOpenAI({
-        apiKey: credential.value,
+        apiKey: decrypt(credential.value),
     });
 
     try {
