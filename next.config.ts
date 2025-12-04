@@ -12,6 +12,18 @@ const nextConfig: NextConfig = {
       },
     ]
   },
+  // Add these for Prisma
+  experimental: {
+    serverComponentsExternalPackages: ['@prisma/client', 'prisma']
+  },
+  webpack: (config, { isServer }) => {
+    if (isServer) {
+      config.externals.push({
+        '@prisma/client': 'commonjs @prisma/client',
+      })
+    }
+    return config
+  }
 };
 
 export default withSentryConfig(nextConfig, {
