@@ -7,10 +7,10 @@
     "build": "next build --turbopack",
     "start": "next start",
     "lint": "biome check",
-    "postinstall": "prisma generate",
     "format": "biome format --write",
     "inngest:dev": "inngest-cli dev",
-    "ngrok:dev": "ngrok http --url=heroic-cute-fish.ngrok-free.app 3000"
+    "ngrok:dev": "ngrok http --url=heroic-cute-fish.ngrok-free.app 3000",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^2.0.23",
