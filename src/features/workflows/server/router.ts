@@ -112,14 +112,21 @@ export const workflowsRouter = createTRPCRouter({
 
                 // 2 - Create new Nodes
                 await tx.node.createMany({
-                    data: nodes.map((node) => ({
-                        id: node.id,
-                        workflowId: id,
-                        name: node.type || "unknown",
-                        type: node.type as NodeType,
-                        position: node.position,
-                        data: node.data || {},
-                    })),
+                    data: nodes.map((node) => {
+                        const data = node.data || {};
+                        const rawCredential = (data as any).credentialId;
+                        const credentialId = typeof rawCredential === 'string' ? rawCredential : null;
+
+                        return {
+                            id: node.id,
+                            workflowId: id,
+                            name: node.type || 'unknown',
+                            type: node.type as NodeType,
+                            position: node.position,
+                            data: node.data || {},
+                            credentialId: credentialId,
+                        };
+                    }),
                 });
 
                 // 3 - Create new Edges
