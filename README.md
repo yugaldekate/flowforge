@@ -12,6 +12,7 @@
 [![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org/)
 [![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactjs.org/)
 [![Prisma](https://img.shields.io/badge/Prisma-2D3748?style=for-the-badge&logo=prisma&logoColor=white)](https://www.prisma.io/)
+[![Zod](https://img.shields.io/badge/Zod-3E67B1?style=for-the-badge&logo=zod&logoColor=white)](https://zod.dev/)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
 ![Better Auth](https://img.shields.io/badge/-Better%20Auth-black?style=for-the-badge&logoColor=white&logo=betterauth&color=black)
 ![Shadcn](https://img.shields.io/badge/-Shadcn-black?style=for-the-badge&logoColor=white&logo=shadcnui&color=black)
@@ -131,17 +132,17 @@ Built-in monetization with **Polar**:
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                         Frontend                             │
+│                         Frontend                            │
 │  Next.js + React Flow + Jotai State Management              │
 └─────────────────────────────────────────────────────────────┘
                             ↓
 ┌─────────────────────────────────────────────────────────────┐
-│                     API Layer (tRPC)                         │
+│                     API Layer (tRPC)                        │
 │        End-to-end type safety + Request validation          │
 └─────────────────────────────────────────────────────────────┘
                             ↓
 ┌─────────────────────────────────────────────────────────────┐
-│                   Workflow Execution Engine                  │
+│                   Workflow Execution Engine                 │
 │  1. Load workflow DAG from PostgreSQL                       │
 │  2. Compute execution order (Topological Sort)              │
 │  3. Queue background job via Inngest                        │
@@ -150,8 +151,8 @@ Built-in monetization with **Polar**:
 └─────────────────────────────────────────────────────────────┘
                             ↓
 ┌─────────────────────────────────────────────────────────────┐
-│                    Node Executors                            │
-│  AI Nodes | HTTP Nodes | Trigger Handlers | Integrations   │
+│                    Node Executors                           │
+│  AI Nodes | HTTP Nodes | Trigger Handlers | Integrations    │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -403,7 +404,5 @@ If you find FlowForge useful, please consider:
 <div align="center">
 
 **Built with ❤️ using TypeScript, Next.js, and modern web technologies**
-
-[⬆ Back to Top](#-flowforge)
 
 </div>
